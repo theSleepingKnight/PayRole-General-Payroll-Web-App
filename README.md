@@ -1,19 +1,5 @@
 # 💰 PayRole — General Payroll Web App
 
-<div align="center">
-
-![PayRole Banner](https://img.shields.io/badge/PayRole-Payroll%20Management-1a56db?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMTIgMlYyMk03IDE1SDkuNUMxMC44OCAxNSAxMiAxMy44OCAxMiAxMi41QzEyIDExLjEyIDEwLjg4IDEwIDkuNSAxMEg3QzUuNjIgMTAgNC41IDguODggNC41IDcuNUM0LjUgNi4xMiA1LjYyIDUgNyA1SDEyIiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjwvc3ZnPg==)
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
-![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)
-
-**A modern, fully client-side Payroll Management Web Application built with vanilla HTML, CSS, and JavaScript — designed for Philippine Peso (₱) payroll processing.**
-
-[🚀 Live Demo](#) · [📖 Documentation](#-features) · [🐛 Report Bug](https://github.com/theSleepingKnight/PayRole-General-Payroll-Web-App/issues) · [✨ Request Feature](https://github.com/theSleepingKnight/PayRole-General-Payroll-Web-App/issues)
-
-</div>
-
 ---
 
 ## 📋 Table of Contents
