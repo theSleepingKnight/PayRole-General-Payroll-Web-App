@@ -1,8 +1,6 @@
-# 💰 PayRole — General Payroll Web App
+--
 
----
-
-## 📋 Table of Contents
+##  Table of Contents
 
 - [About the Project](#-about-the-project)
 - [Features](#-features)
