@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pay Role Management System</title>
+  <meta name="description"
+    content="A modern Pay Role Management System to calculate minimum notes and manage payroll using Philippine Peso denominations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <rect width="22" height="22" rx="6" fill="white" fill-opacity="0.2" />
+            <path
+              d="M11 4V18M7 7.5C7 6.12 8.12 5 9.5 5H13C14.381 5 15.5 6.119 15.5 7.5C15.5 8.881 14.381 10 13 10H9C7.619 10 6.5 11.119 6.5 12.5C6.5 13.881 7.619 15 9 15H13.5"
+              stroke="white" stroke-width="1.8" stroke-linecap="round" />
+          </svg>
+        </div>
+        <span class="brand-name">Pay<strong>Role</strong></span>
+      </div>
+      <nav class="main-nav">
+        <a class="nav-link active" id="nav-calculator" href="#" onclick="switchTab('calculator', this)">Change
+          Calculator</a>
+        <a class="nav-link" id="nav-employee" href="#" onclick="switchTab('employee', this)">Employee Payroll</a>
+        <a class="nav-link" id="nav-records" href="#" onclick="switchTab('records', this)">Records</a>
+      </nav>
+      <div class="header-date" id="headerDate"></div>
+    </div>
+  </header>
+
+  <main class="main-wrapper">
+
+    <!-- ========== TAB: CHANGE CALCULATOR ========== -->
+    <div class="tab-content active" id="tab-calculator">
+      <div class="page-hero">
+        <h1>Change Calculator</h1>
+        <p class="page-desc">
+          Enter the bill amount and the cash given by the customer to know the
+          minimum number of Philippine Peso bills and coins to return.
+        </p>
+      </div>
+
+      <div class="card calc-card">
+        <div class="card-header">
+          <div class="card-header-icon blue-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="4" width="16" height="12" rx="2" stroke="currentColor" stroke-width="1.8" />
+              <circle cx="10" cy="10" r="2.5" stroke="currentColor" stroke-width="1.8" />
+              <path d="M2 8H5M15 8H18M2 12H5M15 12H18" stroke="currentColor" stroke-width="1.8"
+                stroke-linecap="round" />
+            </svg>
+          </div>
+          <h2>Bill &amp; Cash Input</h2>
+        </div>
+
+        <div class="input-row">
+          <div class="input-group">
+            <label for="bill">Bill Amount</label>
+            <div class="input-wrap">
+              <span class="input-prefix">₱</span>
+              <input type="number" id="bill" class="input-bill" placeholder="0.00" min="0" />
+            </div>
+          </div>
+          <div class="input-group">
+            <label for="cash">Cash Given</label>
+            <div class="input-wrap">
+              <span class="input-prefix">₱</span>
+              <input type="number" id="cash" class="cash-given" placeholder="0.00" min="0" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button class="check-btn primary-btn" id="btn">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 8H14M14 8L9 3M14 8L9 13" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Calculate Change
+          </button>
+          <button class="secondary-btn" id="resetBtn" onclick="resetCalculator()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M2 8C2 4.691 4.691 2 8 2C10.21 2 12.14 3.137 13.243 4.857" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" />
+              <path d="M14 8C14 11.309 11.309 14 8 14C5.79 14 3.86 12.863 2.757 11.143" stroke="currentColor"
+                stroke-width="1.8" stroke-linecap="round" />
+              <path d="M13 2L13.243 4.857L10.5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+              <path d="M3 14L2.757 11.143L5.5 11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Reset
+          </button>
+        </div>
+
+        <div class="error-msg" id="error"></div>
+      </div><!-- /card -->
+
+      <!-- Change Summary -->
+      <div class="card result-card hidden" id="result-card">
+        <div class="change-summary-bar">
+          <div class="change-summary-item">
+            <span class="cs-label">Bill Amount</span>
+            <span class="cs-val" id="summary-bill">₱0.00</span>
+          </div>
+          <div class="summary-arrow">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="#1a56db" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="change-summary-item">
+            <span class="cs-label">Cash Given</span>
+            <span class="cs-val" id="summary-cash">₱0.00</span>
+          </div>
+          <div class="summary-arrow">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 10H16M16 10L11 5M16 10L11 15" stroke="#1a56db" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+          </div>
+          <div class="change-summary-item highlight">
+            <span class="cs-label">Change to Return</span>
+            <span class="cs-val" id="summary-change">₱0.00</span>
+          </div>
+        </div>
+
+        <div class="result-title">Minimum Number of Bills &amp; Coins</div>
+        <div class="notes-grid" id="notesGrid"></div>
+
+        <div class="table-fallback">
+          <table class="table" id="changeTable">
+            <caption><strong>Return Change</strong></caption>
+            <tr class="row">
+              <th class="row">No. of Notes</th>
+              <td class="no-of-notes" id="n2000"></td>
+              <td class="no-of-notes" id="n500"></td>
+              <td class="no-of-notes" id="n100"></td>
+              <td class="no-of-notes" id="n50"></td>
+              <td class="no-of-notes" id="n20"></td>
+              <td class="no-of-notes" id="n10"></td>
+              <td class="no-of-notes" id="n5"></td>
+              <td class="no-of-notes" id="n1"></td>
+            </tr>
+            <tr>
+              <th class="row">Denomination</th>
+              <td class="row">₱2000</td>
+              <td class="row">₱500</td>
+              <td class="row">₱100</td>
+              <td class="row">₱50</td>
+              <td class="row">₱20</td>
+              <td class="row">₱10</td>
+              <td class="row">₱5</td>
+              <td class="row">₱1</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div><!-- /tab-calculator -->
+
+
+    <!-- ========== TAB: EMPLOYEE PAYROLL ========== -->
+    <div class="tab-content" id="tab-employee">
+      <div class="page-hero">
+        <h1>Employee Payroll</h1>
+        <p class="page-desc">Add employees and calculate their net pay with government-mandated deductions.</p>
+      </div>
+
+      <div class="two-col-layout">
+        <!-- ADD EMPLOYEE FORM -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon dark-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <circle cx="10" cy="7" r="3.5" stroke="currentColor" stroke-width="1.8" />
+                <path d="M3 17C3 14.239 6.134 12 10 12C13.866 12 17 14.239 17 17" stroke="currentColor"
+                  stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </div>
+            <h2>Add Employee</h2>
+          </div>
+          <div class="form-stack">
+            <div class="input-group">
+              <label for="empName">Full Name</label>
+              <input type="text" id="empName" placeholder="e.g. Juan dela Cruz" />
+            </div>
+            <div class="input-group">
+              <label for="empId">Employee ID</label>
+              <input type="text" id="empId" placeholder="e.g. EMP-001" />
+            </div>
+            <div class="input-group">
+              <label for="empDept">Department</label>
+              <select id="empDept">
+                <option value="">Select Department</option>
+                <option>Human Resources</option>
+                <option>Finance</option>
+                <option>Engineering</option>
+                <option>Marketing</option>
+                <option>Operations</option>
+                <option>Sales</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="empSalary">Monthly Basic Salary (₱)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">₱</span>
+                <input type="number" id="empSalary" placeholder="0.00" min="0" />
+              </div>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn full-w" id="addEmpBtn" onclick="addEmployee()">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <path d="M8 2V14M2 8H14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+              </svg>
+              Add Employee
+            </button>
+          </div>
+          <div class="error-msg" id="emp-error"></div>
+          <div class="success-msg" id="emp-success"></div>
+        </div>
+
+        <!-- PAY SLIP GENERATOR -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-header-icon blue-icon">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <rect x="3" y="2" width="14" height="16" rx="2" stroke="currentColor" stroke-width="1.8" />
+                <path d="M7 7H13M7 10H13M7 13H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </div>
+            <h2>Generate Pay Slip</h2>
+          </div>
+          <div class="form-stack">
+            <div class="input-group">
+              <label for="selEmp">Select Employee</label>
+              <select id="selEmp" onchange="autoFillBasic()">
+                <option value="">-- Select Employee --</option>
+              </select>
+            </div>
+            <div class="input-group">
+              <label for="psBasic">Basic Salary (₱)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">₱</span>
+                <input type="number" id="psBasic" placeholder="0.00" min="0" oninput="liveCalc()" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="psAllowance">Allowances (₱)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">₱</span>
+                <input type="number" id="psAllowance" placeholder="0.00" min="0" value="0" oninput="liveCalc()" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="psOvertime">Overtime Pay (₱)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">₱</span>
+                <input type="number" id="psOvertime" placeholder="0.00" min="0" value="0" oninput="liveCalc()" />
+              </div>
+            </div>
+            <div class="input-group">
+              <label for="psOtherDed">Other Deductions (₱)</label>
+              <div class="input-wrap">
+                <span class="input-prefix">₱</span>
+                <input type="number" id="psOtherDed" placeholder="0.00" min="0" value="0" oninput="liveCalc()" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LIVE PAY SLIP PREVIEW -->
+      <div class="card payslip-preview" id="payslipPreview">
+        <div class="payslip-doc" id="payslipDoc">
+          <div class="payslip-top">
+            <div class="ps-brand">
+              <div class="ps-brand-logo">PayRole</div>
+              <div class="ps-brand-sub">Management System</div>
+            </div>
+            <div class="ps-meta">
+              <div class="ps-meta-name" id="psEmpName">—</div>
+              <div class="ps-meta-detail">
+                <span id="psEmpId">—</span>
+                &bull;
+                <span id="psEmpDept">—</span>
+              </div>
+              <div class="ps-meta-period" id="psPeriod">—</div>
+            </div>
+          </div>
+          <div class="payslip-cols">
+            <div class="ps-col">
+              <div class="ps-col-title">Earnings</div>
+              <div class="ps-row-item"><span>Basic Salary</span><span id="psShowBasic">₱0.00</span></div>
+              <div class="ps-row-item"><span>Allowances</span><span id="psShowAllow">₱0.00</span></div>
+              <div class="ps-row-item"><span>Overtime Pay</span><span id="psShowOT">₱0.00</span></div>
+              <div class="ps-row-item ps-subtotal"><span>Gross Pay</span><span id="psShowGross">₱0.00</span></div>
+            </div>
+            <div class="ps-divider"></div>
+            <div class="ps-col">
+              <div class="ps-col-title">Deductions</div>
+              <div class="ps-row-item"><span>SSS</span><span id="psShowSSS">₱0.00</span></div>
+              <div class="ps-row-item"><span>PhilHealth</span><span id="psShowPH">₱0.00</span></div>
+              <div class="ps-row-item"><span>Pag-IBIG</span><span id="psShowPI">₱0.00</span></div>
+              <div class="ps-row-item"><span>Withholding Tax</span><span id="psShowTax">₱0.00</span></div>
+              <div class="ps-row-item"><span>Other</span><span id="psShowOther">₱0.00</span></div>
+              <div class="ps-row-item ps-subtotal"><span>Total Deductions</span><span id="psShowTotalDed">₱0.00</span>
+              </div>
+            </div>
+          </div>
+          <div class="payslip-net-bar">
+            <span>NET PAY</span>
+            <span class="net-pay-amount" id="psShowNet">₱0.00</span>
+          </div>
+        </div>
+        <div class="payslip-actions">
+          <button class="primary-btn" onclick="savePayroll()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M3 8L6.5 11.5L13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                stroke-linejoin="round" />
+            </svg>
+            Save Record
+          </button>
+          <button class="secondary-btn" onclick="printPayslip()">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M4 6V2H12V6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <rect x="2" y="6" width="12" height="7" rx="1" stroke="currentColor" stroke-width="1.8" />
+              <path d="M5 10H11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              <path d="M5 13H9" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+            Print Pay Slip
+          </button>
+          <div class="success-msg" id="pay-success"></div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEE TABLE -->
+      <div class="card mt-8">
+        <div class="card-header">
+          <div class="card-header-icon dark-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <rect x="2" y="5" width="16" height="11" rx="2" stroke="currentColor" stroke-width="1.8" />
+              <path d="M2 9H18" stroke="currentColor" stroke-width="1.8" />
+              <path d="M7 5V4C7 3.448 7.448 3 8 3H12C12.552 3 13 3.448 13 4V5" stroke="currentColor"
+                stroke-width="1.8" />
+            </svg>
+          </div>
+          <h2>Employee List</h2>
+          <div class="search-box">
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+              <circle cx="6.5" cy="6.5" r="4" stroke="#6b8cba" stroke-width="1.5" />
+              <path d="M10 10L13 13" stroke="#6b8cba" stroke-width="1.5" stroke-linecap="round" />
+            </svg>
+            <input type="text" id="empSearch" placeholder="Search..." oninput="renderEmpTable()" />
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Department</th>
+                <th>Basic Salary</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="empTbody">
+              <tr>
+                <td colspan="5" class="empty-td">No employees yet. Add one above.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /tab-employee -->
+
+
+    <!-- ========== TAB: RECORDS ========== -->
+    <div class="tab-content" id="tab-records">
+      <div class="page-hero">
+        <h1>Payroll Records</h1>
+        <p class="page-desc">All saved payroll entries are listed below.</p>
+      </div>
+
+      <!-- Summary stats -->
+      <div class="stats-row" id="statsRow">
+        <div class="stat-chip">
+          <span class="stat-chip-val" id="statEmpCount">0</span>
+          <span class="stat-chip-lbl">Employees</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-val" id="statGross">₱0.00</span>
+          <span class="stat-chip-lbl">Total Gross</span>
+        </div>
+        <div class="stat-chip">
+          <span class="stat-chip-val" id="statDed">₱0.00</span>
+          <span class="stat-chip-lbl">Total Deductions</span>
+        </div>
+        <div class="stat-chip highlight-chip">
+          <span class="stat-chip-val" id="statNet">₱0.00</span>
+          <span class="stat-chip-lbl">Total Net Pay</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <div class="card-header-icon blue-icon">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M4 6H16M4 10H16M4 14H10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h2>Payroll History</h2>
+          <button class="danger-btn small" onclick="clearRecords()">Clear All</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Date</th>
+                <th>Employee</th>
+                <th>Department</th>
+                <th>Gross Pay</th>
+                <th>Deductions</th>
+                <th>Net Pay</th>
+              </tr>
+            </thead>
+            <tbody id="recordsTbody">
+              <tr>
+                <td colspan="7" class="empty-td">No records yet. Save a payroll entry first.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div><!-- /tab-records -->
+
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Print Overlay -->
+  <div class="print-area" id="printArea"></div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
